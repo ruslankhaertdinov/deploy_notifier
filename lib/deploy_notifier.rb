@@ -1,27 +1,30 @@
 require 'rocket-chat-notifier'
 
 class DeployNotifier
-  attr_reader :success, :project, :env
-  private :success, :project, :env
+  attr_reader :project, :env, :hook
+  private :project, :env, :hook
 
-  def initialize(success:, project: 'local', env: 'development')
-    @success = success
+  SUCCESS_MESSAGE = 'Публикация прошла успешно'.freeze
+  FAILURE_MESSAGE = 'Ошибка публикации'.freeze
+
+  def initialize(project: 'local', env: 'development', hook:)
     @project = project
     @env = env
+    @hook = hook
   end
 
-  def send_report
-    notifier.ping(message)
+  def success_deploy
+    notifier.ping(SUCCESS_MESSAGE)
+  end
+
+  def failure_deploy
+    notifier.ping(FAILURE_MESSAGE)
   end
 
   private
 
   def notifier
-    RocketChat::Notifier.new(webhook, channel: channel, username: username)
-  end
-
-  def webhook
-    ENV['ROCKET_CHAT_DEPLOY_WEBHOOK']
+    RocketChat::Notifier.new(hook, channel: channel, username: username)
   end
 
   def channel
@@ -30,13 +33,5 @@ class DeployNotifier
 
   def username
     "Deploy: #{ project } | #{ env.capitalize }"
-  end
-
-  def message
-    if success == true
-      'Публикация прошла успешно'
-    else
-      'Ошибка публикации'
-    end
   end
 end
