@@ -1,9 +1,11 @@
-class DeployNotifier::Configuration
-  attr_accessor :webhook, :project, :env
+class DeployNotifier
+  class Configuration
+    attr_accessor :webhook, :project, :env
 
-  def initialize
-    @webhook = ''
-    @project = 'local'
-    @env = 'development'
+    def initialize
+      @webhook = ''
+      @project = 'local'
+      @env = 'development'
+    end
   end
 end

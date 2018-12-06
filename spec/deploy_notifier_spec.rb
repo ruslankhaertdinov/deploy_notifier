@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe DeployNotifier do
-  let(:notifier) { described_class.new(hook: 'hook') }
+  let(:notifier) { described_class.new }
   let(:rocket_chat_notifier_instance) { instance_double(RocketChat::Notifier) }
 
   before do
