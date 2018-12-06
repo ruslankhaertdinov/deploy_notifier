@@ -11,11 +11,11 @@ class DeployNotifier
   end
 
   def success_deploy
-    notifier.ping(success_message)
+    notifier.ping(report_message('успешно'))
   end
 
   def failure_deploy
-    notifier.ping(failure_message)
+    notifier.ping(report_message('ошибка'))
   end
 
   private
@@ -44,11 +44,7 @@ class DeployNotifier
     last_git_log.last
   end
 
-  def success_message
-    "#{ author }: #{ commit_message }. Публикация прошла успешно"
-  end
-
-  def failure_message
-    "#{ author }: #{ commit_message }. Ошибка публикации"
+  def report_message(state)
+    "#{ author }: #{ commit_message }. Статус: #{ state }"
   end
 end
