@@ -11,11 +11,11 @@ class DeployNotifier
   end
 
   def success_deploy
-    notifier.ping(report_message('успешно'))
+    notifier.ping(report_message('успешно'), icon_emoji: ':smiley_cat:')
   end
 
   def failure_deploy
-    notifier.ping(report_message('ошибка'))
+    notifier.ping(report_message('ошибка'), icon_emoji: ':scream_cat:')
   end
 
   private
