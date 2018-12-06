@@ -10,23 +10,19 @@ describe DeployNotifier do
   end
 
   describe '#success_deploy' do
-    let(:message) { 'Публикация прошла успешно' }
-
     it 'sends success report' do
       notifier.success_deploy
 
-      expect(rocket_chat_notifier_instance).to have_received(:ping).with(message)
+      expect(rocket_chat_notifier_instance).to have_received(:ping)
     end
   end
 
   describe '#failure_deploy' do
     context 'failure message' do
-      let(:message) { 'Ошибка публикации' }
-
       it 'sends success report' do
         notifier.failure_deploy
 
-        expect(rocket_chat_notifier_instance).to have_received(:ping).with(message)
+        expect(rocket_chat_notifier_instance).to have_received(:ping)
       end
     end
   end

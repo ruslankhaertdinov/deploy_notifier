@@ -4,9 +4,6 @@ class DeployNotifier
   attr_reader :project, :env, :hook
   private :project, :env, :hook
 
-  SUCCESS_MESSAGE = 'Публикация прошла успешно'.freeze
-  FAILURE_MESSAGE = 'Ошибка публикации'.freeze
-
   def initialize(project: 'local', env: 'development', hook:)
     @project = project
     @env = env
@@ -14,11 +11,11 @@ class DeployNotifier
   end
 
   def success_deploy
-    notifier.ping(SUCCESS_MESSAGE)
+    notifier.ping(success_message)
   end
 
   def failure_deploy
-    notifier.ping(FAILURE_MESSAGE)
+    notifier.ping(failure_message)
   end
 
   private
@@ -33,5 +30,25 @@ class DeployNotifier
 
   def username
     "Deploy: #{ project } | #{ env.capitalize }"
+  end
+
+  def last_git_log
+    @last_git_log ||= `git log -1 --pretty='%an||%s'`.split('||').map(&:strip)
+  end
+
+  def author
+    last_git_log.first
+  end
+
+  def commit_message
+    last_git_log.last
+  end
+
+  def success_message
+    "#{ author }: #{ commit_message }. Публикация прошла успешно"
+  end
+
+  def failure_message
+    "#{ author }: #{ commit_message }. Ошибка публикации"
   end
 end
