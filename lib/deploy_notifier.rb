@@ -33,7 +33,7 @@ class DeployNotifier
   end
 
   def report_message(state)
-    "#{ task_number }: <#{ author }> #{ commit_message }. Статус: #{ state }"
+    "##{ task_number }: <#{ author }> #{ commit_message }. Статус: #{ state }"
   end
 
   def task_number
