@@ -33,15 +33,16 @@ class DeployNotifier
   end
 
   def report_message(state)
-    "##{ task_number }: <#{ author }> #{ commit_message }. Статус: #{ state }"
+    "#{ task_number }: #{ author } #{ commit_message }. Статус: #{ state }"
   end
 
   def task_number
-    `git rev-parse --abbrev-ref HEAD`.scan(/^\d+/).first
+    number = `git rev-parse --abbrev-ref HEAD`.scan(/^\d+/).first
+    number.nil? ? '<номер не указан>' : "##{ number }"
   end
 
   def author
-    last_git_log.first
+    "<#{ last_git_log.first }>"
   end
 
   def commit_message
