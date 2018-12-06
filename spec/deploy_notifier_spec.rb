@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe DeployNotifier do
-  let(:notifier) { described_class.new }
+  let(:notifier) { described_class.new(success: success) }
   let(:rocket_chat_notifier_instance) { instance_double(RocketChat::Notifier) }
 
   before do
@@ -9,18 +9,22 @@ describe DeployNotifier do
     allow(rocket_chat_notifier_instance).to receive(:ping)
   end
 
-  describe '#success_deploy' do
-    it 'sends success report' do
-      notifier.success_deploy
+  describe '#send_report' do
+    context 'success' do
+      let(:success) { true }
 
-      expect(rocket_chat_notifier_instance).to have_received(:ping)
-    end
-  end
-
-  describe '#failure_deploy' do
-    context 'failure message' do
       it 'sends success report' do
-        notifier.failure_deploy
+        notifier.send_report
+
+        expect(rocket_chat_notifier_instance).to have_received(:ping)
+      end
+    end
+
+    context 'failure' do
+      let(:success) { false }
+
+      it 'sends failure report' do
+        notifier.send_report
 
         expect(rocket_chat_notifier_instance).to have_received(:ping)
       end
