@@ -32,8 +32,12 @@ class DeployNotifier
     "Deploy: #{ project } | #{ env.capitalize }"
   end
 
-  def last_git_log
-    @last_git_log ||= `git log -1 --pretty='%an||%s'`.split('||').map(&:strip)
+  def report_message(state)
+    "#{ task_number }: <#{ author }> #{ commit_message }. Статус: #{ state }"
+  end
+
+  def task_number
+    `git rev-parse --abbrev-ref HEAD`.scan(/^\d+/).first
   end
 
   def author
@@ -44,7 +48,7 @@ class DeployNotifier
     last_git_log.last
   end
 
-  def report_message(state)
-    "#{ author }: #{ commit_message }. Статус: #{ state }"
+  def last_git_log
+    @last_git_log ||= `git log -1 --pretty='%an||%s'`.split('||').map(&:strip)
   end
 end
