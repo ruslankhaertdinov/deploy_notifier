@@ -22,7 +22,7 @@ Or install it yourself as:
 
 Set config in config/initializes/deploy_notifier.rb
 
-```
+```ruby
 # example:
 DeployNotifier.configure do |config|
   config.webhook = 'http://some.webhook.url'
@@ -32,11 +32,14 @@ end
 ```
 
 Then call
-```
+
+```ruby
 DeployNotifier.new(success: true).send_report
 ```
+
 or
-```
+
+```ruby
 DeployNotifier.new(success: false).send_report
 ```
 to send message.
