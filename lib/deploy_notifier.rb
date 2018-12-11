@@ -73,7 +73,7 @@ class DeployNotifier
   end
 
   def method_missing(method, *args)
-    if %i[weebhook project env].include?(method)
+    if %i[webhook project env].include?(method)
       self.class.configuration.send(method)
     else
       super

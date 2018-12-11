@@ -3,7 +3,7 @@ class DeployNotifier
     attr_accessor :webhook, :project, :env
 
     def initialize
-      @weebhook = ''
+      @webhook = ''
       @project = 'local'
       @env = 'development'
     end
