@@ -1,8 +1,9 @@
 class DeployNotifier
   class Configuration
-    attr_accessor :project, :env
+    attr_accessor :webhook, :project, :env
 
     def initialize
+      @weebhook = ''
       @project = 'local'
       @env = 'development'
     end

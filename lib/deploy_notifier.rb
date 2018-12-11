@@ -5,7 +5,6 @@ class DeployNotifier
   CHANNEL = 'project_publications'.freeze
   SUCCESS_ICON = ':white_check_mark:'.freeze
   FAILURE_ICON = ':negative_squared_cross_mark:'.freeze
-  WEBHOOK = 'https://rocket.etpgpb.ru/hooks/oNapfJ8NEogaiwMsB/jXbapvmhz8YjzBaJi3GASnb5cvpTC3CmFheEPw5HkWi2ugwE'
 
   class << self
     def configuration
@@ -31,7 +30,7 @@ class DeployNotifier
   private
 
   def notifier
-    RocketChat::Notifier.new(WEBHOOK, channel: CHANNEL, username: username)
+    RocketChat::Notifier.new(webhook, channel: CHANNEL, username: username)
   end
 
   def username
@@ -39,7 +38,9 @@ class DeployNotifier
   end
 
   def report_message
-    "#{ task_number }: #{ author } #{ commit_message }. Статус: #{ state_translation }"
+    # временно отключил проверку гита
+    # "#{ task_number }: #{ author } #{ commit_message }. Статус: #{ state_translation }"
+    "Статус: #{ state_translation }"
   end
 
   def task_number
@@ -72,7 +73,7 @@ class DeployNotifier
   end
 
   def method_missing(method, *args)
-    if %i[project env].include?(method)
+    if %i[weebhook project env].include?(method)
       self.class.configuration.send(method)
     else
       super
