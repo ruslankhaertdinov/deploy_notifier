@@ -3,7 +3,6 @@ require 'deploy_notifier/configuration'
 
 class DeployNotifier
   CHANNEL = 'project_publications'.freeze
-  SUCCESS_ICON = ':white_check_mark:'.freeze
   FAILURE_ICON = ':negative_squared_cross_mark:'.freeze
 
   class << self
@@ -38,7 +37,9 @@ class DeployNotifier
   end
 
   def report_message
-    "#{ task_number }: #{ author } #{ commit_message }. Статус: #{ state_translation }"
+    # временно отключил проверку гита
+    # "#{ task_number }: #{ author } #{ commit_message }. Статус: #{ state_translation }"
+    "Статус: #{ state_translation }"
   end
 
   def task_number
@@ -67,11 +68,15 @@ class DeployNotifier
   end
 
   def icon_emoji
-    success? ? SUCCESS_ICON : FAILURE_ICON
+    success? ? success_icon : FAILURE_ICON
+  end
+
+  def success_icon
+    env == 'production' ? success_icon_production : success_icon_staging
   end
 
   def method_missing(method, *args)
-    if %i[webhook project env].include?(method)
+    if %i[webhook project env success_icon_production success_icon_staging].include?(method)
       self.class.configuration.send(method)
     else
       super
