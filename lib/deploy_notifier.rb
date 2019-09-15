@@ -3,7 +3,6 @@ require 'deploy_notifier/configuration'
 
 class DeployNotifier
   CHANNEL = 'project_publications'.freeze
-  SUCCESS_ICON = ':white_check_mark:'.freeze
   FAILURE_ICON = ':negative_squared_cross_mark:'.freeze
 
   class << self
@@ -69,11 +68,15 @@ class DeployNotifier
   end
 
   def icon_emoji
-    success? ? SUCCESS_ICON : FAILURE_ICON
+    success? ? success_icon : FAILURE_ICON
+  end
+
+  def success_icon
+    env == 'production' ? success_icon_production : success_icon_staging
   end
 
   def method_missing(method, *args)
-    if %i[webhook project env].include?(method)
+    if %i[webhook project env success_icon_production success_icon_staging].include?(method)
       self.class.configuration.send(method)
     else
       super
